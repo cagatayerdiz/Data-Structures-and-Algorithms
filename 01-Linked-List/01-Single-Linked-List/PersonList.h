@@ -15,12 +15,11 @@ public:
 	Person *head;
 	int recordCount;
 	PersonList();
-	void Insert(char *, char *, int);
-	void Remove(int );
-//	void Update(int, Person *);
-//	int Search(char *);
+	void Insert(char *, char *, int); // Insert(Person *)
+	void Remove(int);
+	void Update(int, char *, char *, int); // Update(int, Person *)
+	int Search(char *);
 	void List();
-//	void MakeEmpty();
+	void MakeEmpty();
 	~PersonList();
 };
-

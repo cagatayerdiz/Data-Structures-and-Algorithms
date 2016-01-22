@@ -1,13 +1,13 @@
 /*
  Single Linked List
 */
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "PersonList.h"
 #include <string>
 
-
 void Operation();
-void Execute(int);
+bool Execute(int);
 void AddRecord();
 void DeleteRecord();
 void UpdateRecord();
@@ -21,27 +21,23 @@ Person p;
 int main()
 {
 	int choice;
+	bool cont = true;
 
-	Operation();
-	cin >> choice;
-	cout << endl;
-	Execute(choice);
-	Execute(1);
-	Execute(1);
-	Execute(5);
-	Execute(1);
-	Execute(1);
-	Execute(2);
-	Execute(1);
-	Execute(2);
-	Execute(5);
-	Execute(2);
+	while (cont)
+	{
+		Operation();
+		cin >> choice;
+		cout << endl;
+		cont = Execute(choice);
+		getchar(); getchar();
+	}
 
 	return 0;
 }
 
 void Operation()
 {
+	cout << endl;
 	cout << "Choose the operation:" << endl << endl;
 	cout << " 1 - Add record" << endl;
 	cout << " 2 - Delete record" << endl;
@@ -52,34 +48,30 @@ void Operation()
 	cout << " Choice: ";
 }
 
-void Execute(int choice)
+bool Execute(int choice)
 {
 	switch (choice)
 	{
-	case 1: AddRecord(); break;
-	case 2: DeleteRecord(); break;
-	case 3: UpdateRecord(); break;
-	case 4: SearchRecord(); break;
-	case 5: ListAllRecords(); break;
-	case 6: Exit(); break;
-	default: cout << " Wrong choice" << endl; break;
+	case 1: AddRecord(); return true;
+	case 2: DeleteRecord(); return true;
+	case 3: UpdateRecord(); return true;
+	case 4: SearchRecord(); return true;
+	case 5: ListAllRecords(); return true;
+	case 6: Exit(); return false;
+	default: cout << " Wrong choice" << endl; return true;
 	}
-	cout << endl;
 }
 
-void AddRecord() 
+void AddRecord()
 {
-	cout << "Add Record" << endl;
-	
 	string name, surname;
-	int age;
-	
+
 	cout << " Name: ";
 	cin >> name;
 	cout << " Surname: ";
 	cin >> surname;
 	cout << " Age: ";
-	cin >> age;
+	cin >> p.age;
 
 	p.name = new char[name.length() + 1];
 	strcpy(p.name, name.data());
@@ -89,8 +81,6 @@ void AddRecord()
 	strcpy(p.surname, surname.data());
 	p.surname[surname.length()] = '\0';
 
-	p.age = age;
-
 	pl.Insert(p.name, p.surname, p.age);
 	cout << " Record has been added" << endl;
 }
@@ -98,11 +88,9 @@ void AddRecord()
 void DeleteRecord()
 {
 	if (pl.recordCount == 0) return;
-	
-	cout << "Delete Record" << endl;
 
 	ListAllRecords();
-	
+
 	int no;
 	cout << " Order no: ";
 	cin >> no;
@@ -113,17 +101,52 @@ void DeleteRecord()
 
 void UpdateRecord()
 {
-	cout << "Update Record" << endl;
+	if (pl.recordCount == 0) return;
+
+	ListAllRecords();
+
+	int no;
+	cout << " Order no: ";
+	cin >> no;
+
+	string name, surname;
+	cout << " New name: ";
+	cin >> name;
+	cout << " New surname: ";
+	cin >> surname;
+	cout << " New age: ";
+	cin >> p.age;
+
+	p.name = new char[name.length() + 1];
+	strcpy(p.name, name.data());
+	p.name[name.length()] = '\0';
+
+	p.surname = new char[surname.length() + 1];
+	strcpy(p.surname, surname.data());
+	p.surname[surname.length()] = '\0';
+
+	pl.Update(no, p.name, p.surname, p.age);
+	cout << " Record has been updated" << endl;
 }
 
 void SearchRecord()
 {
-	cout << "Search Record" << endl;
+	if (pl.recordCount == 0) return;
+
+	string name;
+	cout << " Search name: ";
+	cin >> name;
+
+	p.name = new char[name.length() + 1];
+	strcpy(p.name, name.data());
+	p.name[name.length()] = '\0';
+
+	if (pl.Search(p.name) == 0)
+		cout << " Record not found" << endl;
 }
 
 void ListAllRecords()
 {
-	cout << "List All Records" << endl;
 	pl.List();
 }
 

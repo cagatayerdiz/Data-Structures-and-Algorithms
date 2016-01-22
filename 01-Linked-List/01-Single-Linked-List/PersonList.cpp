@@ -60,6 +60,39 @@ void PersonList::Remove(int no)
 	recordCount--;
 }
 
+void PersonList::Update(int no, char *name, char *surname, int age) 
+{
+	Person *traverse = head;
+	int i = 1;
+	
+	while (i < no){
+		traverse = traverse->next;
+		i++;
+	}
+
+	traverse->name = name;
+	traverse->surname = surname;
+	traverse->age = age;
+}
+
+int PersonList::Search(char *name)
+{
+	Person *traverse = head;
+	int i = 1, found = 0;
+
+	while (traverse != NULL)
+	{
+		if (strcmp(traverse->name, name) == 0)
+		{
+			cout << " Record found at index " << i << "." << endl;
+			found++;
+		}
+		traverse = traverse->next;
+		i++;
+	}
+	return found;
+}
+
 void PersonList::List()
 {
 	// for not losing head pointer
@@ -76,8 +109,20 @@ void PersonList::List()
 	}
 }
 
+void PersonList::MakeEmpty()
+{
+	Person *traverse;
+
+	while (head != NULL) {
+		traverse = head;
+		head = head->next;
+		delete traverse;
+	}
+
+	delete head;
+}
+
 PersonList::~PersonList()
 {
-	//MakeEmpty();
-	recordCount = 0;
+	MakeEmpty();
 }
